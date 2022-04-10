@@ -1,6 +1,16 @@
 - Create a new Google account.
 - Turn https://myaccount.google.com/lesssecureapps to ON. This makes your account less secure.
 
+Download the last release and unzip it
+
+cd to the directory
+
+Edit config.py, add the data and save it as config_local.py
+
+test it 
+
+$ python3 scprime_status_check.py
+
 You will need a cronjob to execute it periodicaly.
 
 $ crontab -e
