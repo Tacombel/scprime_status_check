@@ -1,4 +1,5 @@
 from config_local import Config
+from send_email import send_email
 import requests
 from requests.structures import CaseInsensitiveDict
 import json
@@ -25,17 +26,27 @@ def get_status(publickey):
         status = 'Error processing JSON'
     return status
 
+def send_error(status, n):
+    provider_name = Config.provider_name
+    if status == 'Error processing JSON' or status == 'Offline' or 'Online':
+            send_email('ScPrime Status Check ALARM', provider_name[n] + ': ' + status)
+
 def main():
     provider_list = Config.provider_list
     provider_name = Config.provider_name
     if len(provider_list) == 0:
-        print(f'Lista de hosts vacia')
+        print(f'Lista de hosts vacia', flush=True)
+        send_email('ScPrime Status Check ALARM', 'Empty hosts list. Check config_local.py')
     elif len(provider_list) == 1:
-        print(f'Provider {get_status(provider_list[0])}')
+        status = get_status(provider_list[0])
+        print(f'Provider {status}', flush=True)
+        send_error(status, 0)
     elif len(provider_list) > 1:
         n = 0
         for e in provider_list:
-            print(f'Host {provider_name[n]} {get_status(e)}')
+            status = get_status(e)
+            print(f'Host {provider_name[n]} {status}')
+            send_error(status, n)
             n += 1
 
 if __name__ == '__main__':

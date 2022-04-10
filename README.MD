@@ -1,0 +1,2 @@
+- Create a new Google account.
+- Turn https://myaccount.google.com/lesssecureapps to ON. This makes your account less secure.
