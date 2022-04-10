@@ -18,3 +18,7 @@ $ crontab -e
 And add a line similar to this one, that will execute the script every 20 minutes.
 
 */20 * * * * systemd-cat -t "checkstatus-cron" python3 /home/daniel/scprime_status_check/scprime_status_check.py
+
+Donations welcome:
+
+SCP: 29397f5ac09162c48aeea537c4950d90a6b370899a2c8054a71e82ab4954228bb63e59c56464
