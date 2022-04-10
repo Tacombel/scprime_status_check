@@ -1,11 +1,15 @@
 - Create a new Google account.
 - Turn https://myaccount.google.com/lesssecureapps to ON. This makes your account less secure.
 
+It is recomended to use a secondary account for this, as the reduced security makes it vulnerable.
+
 Download the last release and unzip it
 
 cd to the directory
 
 Edit config.py, add the data and save it as config_local.py
+
+You can add several hosts separated by commas
 
 test it 
 
