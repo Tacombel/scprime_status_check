@@ -28,7 +28,7 @@ def get_status(publickey):
 
 def send_error(status, n):
     provider_name = Config.provider_name
-    if status == 'Error processing JSON' or status == 'Offline' or 'Online':
+    if status == 'Error processing JSON' or status == 'Offline':
             send_email('ScPrime Status Check ALARM', provider_name[n] + ': ' + status)
 
 def main():
