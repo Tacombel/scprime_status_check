@@ -1,7 +1,11 @@
+This script monitors your grafana data to check your status from its point of view. It is independent of spd or spc so you can run it where you like.
+
 - Create a new Google account.
 - Turn https://myaccount.google.com/lesssecureapps to ON. This makes your account less secure.
 
 It is recomended to use a secondary account for this, as the reduced security makes it vulnerable.
+
+The following is for linux, but windows should be quite similar.
 
 Download the last release and unzip it
 
@@ -22,6 +26,10 @@ $ crontab -e
 And add a line similar to this one, that will execute the script every 20 minutes.
 
 */20 * * * * systemd-cat -t "checkstatus-cron" python3 /home/daniel/scprime_status_check/scprime_status_check.py
+
+To check the journal use
+
+$ sudo journalctl -fn1000|grep checkstatus
 
 Donations welcome:
 
