@@ -5,6 +5,8 @@ This script monitors your grafana data to check your status from its point of vi
 
 It is recomended to use a secondary account for this, as the reduced security makes it vulnerable.
 
+You can also use telegram. For that you will need to add the neccessary info as specified in the config.py
+
 The following is for linux, but windows should be quite similar.
 
 Download the last release and unzip it
