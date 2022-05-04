@@ -1,5 +1,7 @@
 This script monitors your grafana data to check your status from its point of view. It is independent of spd or spc so you can run it where you like.
 
+It is recomended to install it in a server outside the subnet where your provider is (AWS, Oracle,...)
+
 As of 30/5/2022 gmail will block unsecure use of its API so using Telegram is recomended.
 
 - Create a new Google account.
