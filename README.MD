@@ -1,5 +1,7 @@
 This script monitors your grafana data to check your status from its point of view. It is independent of spd or spc so you can run it where you like.
 
+As of 30/5/2022 gmail will block unsecure use of its API so using Telegram is recomended.
+
 - Create a new Google account.
 - Turn https://myaccount.google.com/lesssecureapps to ON. This makes your account less secure.
 
