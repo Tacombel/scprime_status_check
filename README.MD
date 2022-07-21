@@ -31,11 +31,7 @@ $ crontab -e
 
 And add a line similar to this one, that will execute the script every 20 minutes.
 
-In order to prevent everybody scraping at the same time, you can get an aleatory minute from the following api and use it in the cron job
-
-x = http://www.randomnumberapi.com/api/v1.0/random?min=0&max=19
-
-x/20 * * * * systemd-cat -t "checkstatus-cron" python3 /home/daniel/scprime_status_check/scprime_status_check.py
+*/20 * * * * systemd-cat -t "checkstatus-cron" python3 /home/daniel/scprime_status_check/scprime_status_check.py
 
 To check the journal use
 
