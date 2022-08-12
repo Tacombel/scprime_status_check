@@ -1,5 +1,9 @@
 This script monitors your grafana data to check your status from its point of view. It is independent of spd or spc so you can run it where you like.
 
+It is recomended to install it in a server outside the subnet where your provider is (AWS, Oracle,...)
+
+As of 30/5/2022 gmail will block unsecure use of its API so using Telegram is recomended.
+
 - Create a new Google account.
 - Turn https://myaccount.google.com/lesssecureapps to ON. This makes your account less secure.
 
@@ -27,11 +31,17 @@ $ crontab -e
 
 And add a line similar to this one, that will execute the script every 20 minutes.
 
-*/20 * * * * systemd-cat -t "checkstatus-cron" python3 /home/daniel/scprime_status_check/scprime_status_check.py
+In order to prevent everybody scraping at the same time, you can get an aleatory minute from the following api and use it in the cron job
+
+x = http://www.randomnumberapi.com/api/v1.0/random?min=0&max=19
+
+x,x+20,x+40 * * * * systemd-cat -t "checkstatus-cron" python3 /home/daniel/scprime_status_check/scprime_status_check.py
 
 To check the journal use
 
 $ sudo journalctl -fn1000|grep checkstatus
+
+----------------------------------------------------------------------------------------------------
 
 Donations welcome:
 
