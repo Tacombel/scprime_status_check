@@ -1,11 +1,12 @@
 from config_local import Config
+from os.path import exists
 from send_email import send_email
 from send_telegram import send_telegram_msg
 import requests
 from requests.structures import CaseInsensitiveDict
 import json
 
-def get_status(publickey):
+def get_status(publickey, name):
     url = 'https://grafana.scpri.me/api/ds/query'
     headers = CaseInsensitiveDict()
     headers["Accept"] = "application/json"
@@ -16,9 +17,31 @@ def get_status(publickey):
     r = r.json()
     try:
         status = r['results']['A']['frames'][0]['data']['values'][0][0]
+        usedstorage = r['results']['A']['frames'][0]['data']['values'][4][0]
+        usedstorage = int(usedstorage)
     except:
         print(f'Error processing JSON', flush=True)
         status = 2
+    
+    usedstorage_dict = {}
+    if exists('usedstorage.txt'):
+        with open('usedstorage.txt') as f:
+            usedstorage_dict = json.loads(f.read())
+            if name in usedstorage_dict:
+                usedstorage_old = usedstorage_dict[name]
+            else:
+                usedstorage_old = usedstorage
+    else:
+        usedstorage_old = usedstorage
+    usedstorage_alarm = False
+    if usedstorage < (usedstorage_old * (100 - Config.storage_alarm_factor) / 100):
+        usedstorage_alarm = True
+    
+    usedstorage_dict[name] = usedstorage
+    with open('usedstorage.txt', 'w') as f:
+        f.write(json.dumps(usedstorage_dict))
+        f.close()
+
     error = get_error(publickey)
     if len(error) == 0:
         error = None
@@ -28,7 +51,7 @@ def get_status(publickey):
         status = 'Online'
     elif status == 2:
         status = 'Error processing JSON'
-    return status, error
+    return status, error, usedstorage_alarm
 
 def get_error(publickey):
     url = 'https://grafana.scpri.me/api/ds/query'
@@ -46,7 +69,7 @@ def get_error(publickey):
             response.append(e[0])
     return response
 
-def send_error(status, error, n):
+def send_error(status, error, storage, n):
     provider_name = Config.provider_name
     if status == 'Error processing JSON' or status == 'Offline':
         subject = 'ScPrime Status Check ALARM'
@@ -68,6 +91,14 @@ def send_error(status, error, n):
             send_email(subject, text)
         if Config.telegram_token != "":
             send_telegram_msg(text_tlgrm)
+    if storage:
+        subject = 'ScPrime Status Check ALARM'
+        text =   provider_name[n] + ': Storage Alarm'
+        text_tlgrm = '<b>' + provider_name[n] + '</b>: Storage Alarm'
+        if Config.email != "":
+            send_email(subject, text)
+        if Config.telegram_token != "":
+            send_telegram_msg(text_tlgrm)
 
 def main():
     provider_list = Config.provider_list
@@ -76,16 +107,21 @@ def main():
         print(f'Lista de hosts vacia', flush=True)
         send_email('ScPrime Status Check ALARM', 'Empty hosts list. Check config_local.py')
     elif len(provider_list) == 1:
-        status, error = get_status(provider_list[0])
-        print(f'Host {provider_name[n]} {status}, {error}', flush=True)
-        send_error(status, error, 0)
+        status, error, storage = get_status(provider_list[0], provider_name[0])
+        print(f'Host {provider_name[0]} {status}, {error}', flush=True)
+        if storage:
+            print(f'Host {provider_name[0]}: Storage Alarm', flush=True)
+        send_error(status, error, storage, 0)
     elif len(provider_list) > 1:
         n = 0
-        for e in provider_list:
-            status, error = get_status(e)
+        for i, e in enumerate(provider_list):
+            status, error, storage = get_status(e, provider_name[i])
             print(f'Host {provider_name[n]} {status}, {error}', flush=True)
-            send_error(status, error, n)
+            if storage:
+                print(f'Host {provider_name[n]}: Storage Alarm', flush=True)
+            send_error(status, error, storage, n)
             n += 1
+
 
 if __name__ == '__main__':
     main()

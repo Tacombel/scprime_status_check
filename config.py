@@ -13,3 +13,5 @@ class Config(object):
     telegram_token = "" 
     # Your ID User. Search @userinfobot. There will be several. Keep testing until one answer with something like Id:56869524
     user_id = ""
+    #percentage to set the alarm for reduction of used space. 5% in this example
+    storage_alarm_factor = 5
