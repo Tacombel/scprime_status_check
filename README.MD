@@ -1,6 +1,12 @@
 This script monitors your grafana data to check your status from its point of view. It is independent of spd or spc so you can run it where you like.
 
-It is recomended to install it in a server outside the subnet where your provider is (AWS, Oracle,...)
+It is recomended to install it on a server outside the subnet where your provider is (AWS, Oracle,...), or at least in a different computer than your host.
+
+If you are upgrading from a previous version, you should add next line to your config_local.txt
+
+storage_alarm_factor = 5
+
+where 5 will be the percentage that will activate the storage alarm.
 
 As of 30/5/2022 gmail will block unsecure use of its API so using Telegram is recomended.
 
@@ -9,7 +15,7 @@ As of 30/5/2022 gmail will block unsecure use of its API so using Telegram is re
 
 It is recomended to use a secondary account for this, as the reduced security makes it vulnerable.
 
-You can also use telegram. For that you will need to add the neccessary info as specified in the config.py
+You can also use telegram. For that you will need to add the neccessary info as specified in the config.py to your config_local.txt
 
 The following is for linux, but windows should be quite similar.
 
