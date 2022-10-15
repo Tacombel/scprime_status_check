@@ -1,1 +1,0 @@
-{"MiPC": 343073095680, "ScPrime01": 554147250176, "Test desfasado": 0, "SCPrime03": 389952831488, "Not OK": 0}
