@@ -1,3 +1,7 @@
+NOT MAINTAINED! PROBABLY NOT WORKING!
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 This script monitors your grafana data to check your status from its point of view. It is independent of spd or spc so you can run it where you like.
 
 It is recomended to install it on a server outside the subnet where your provider is (AWS, Oracle,...), or at least in a different computer than your host.
